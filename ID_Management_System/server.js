@@ -24,8 +24,8 @@ app.use(
   })
 );
 
-const UserRegistrationAccounts = require("./User/Accounts/routes/register");
-const UserLoginAccounts = require("./User/Accounts/routes/login");
+const UserRegistrationAccounts = require("./User/Accounts/routes/Register");
+const UserLoginAccounts = require("./User/Accounts/routes/Login");
 
 const StudentIdApplication = require("./User/IdApplication/routes/Student");
 const StaffIdApplication = require("./User/IdApplication/routes/Staff");
