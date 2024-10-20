@@ -7,7 +7,7 @@ require("./DatabaseServer/db");
 
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(",") | ["http://localhost:5173"],
+    origin:["http://localhost:5173"],
     credentials: true,
   })
   // session({
