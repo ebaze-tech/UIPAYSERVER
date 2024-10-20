@@ -4,6 +4,7 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const PORT = process.env.PORT ? process.env.PORT : 5000;
+require("dotenv").config();
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,

@@ -8,7 +8,7 @@ const StaffIdUpgrade = async (req, res) => {
   const schoolSecurityReport = req.files?.passport?.[0]?.path; // Getting securtiy report file path
   const affidavit = req.files?.passport?.[0]?.path; // Getting affidavti file path
 
-  const { id } = req.params;
+  const { id } = req.params
   try {
     if (
       !number ||
