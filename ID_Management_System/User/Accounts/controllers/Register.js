@@ -3,9 +3,27 @@ const StudentModel = require("../models/Student");
 const StaffModel = require("../models/Staff");
 
 const register = async (req, res) => {
-  const { number, email, password } = req.body;
+  const {
+    number,
+    email,
+    password,
+    surname,
+    otherNames,
+    department,
+    faculty,
+    hall,
+  } = req.body;
 
-  if (!number || !email || !password) {
+  if (
+    !number ||
+    !email ||
+    !password ||
+    !surname ||
+    !otherNames ||
+    !department ||
+    !faculty ||
+    !hall
+  ) {
     return res.status(400).json({
       message: "Input cannot be empty",
     });
@@ -47,15 +65,25 @@ const register = async (req, res) => {
       email,
       password: hashedPassword,
       number,
+      surname,
+      otherNames,
+      department,
+      faculty,
+      hall,
     });
 
+    // Get a plain object representation and exclude password
+    const userWithoutPassword = newUser.get({ plain: true });
+    delete userWithoutPassword.password; // Exclude the password field
+
     res.status(201).json({
-      newUser,
+      user: userWithoutPassword,
       message: `${userType} registered successfully.`,
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({
+      message: "Server Error",
       error: err.message,
     });
   }

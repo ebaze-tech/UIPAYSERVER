@@ -1,5 +1,5 @@
 const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../../../DatabaseServer/db");
+const {sequelize} = require("../../../DatabaseServer/db");
 
 class StaffApplication extends Model {}
 
@@ -34,15 +34,15 @@ StaffApplication.init(
       allowNull: false,
     },
     passport: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     schoolSecurityReport: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     affidavit: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },

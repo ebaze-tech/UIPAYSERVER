@@ -1,5 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
-const sequelize = require("../../../DatabaseServer/db");
+const {sequelize} = require("../../../DatabaseServer/db");
 
 class StudentUpgrade extends Model {}
 
@@ -14,15 +14,15 @@ StudentUpgrade.init(
       defaultValue: "Pending",
     },
     passport: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     schoolSecurityReport: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     affidavit: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     reason: {

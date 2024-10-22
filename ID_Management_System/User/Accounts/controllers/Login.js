@@ -45,16 +45,18 @@ const login = async (req, res) => {
       });
     }
 
+    // Generate JWT token
     const token = jwt.sign({ userType, _id: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
+    // Get user details (excluding password)
+    const userDetails = user.get({ plain: true });
+    delete userDetails.password; // Ensure password is not returned
+
     res.status(200).json({
       message: "Login successful.",
-      user: {
-        id: user.id,
-        number: user.number,
-      },
+      user: userDetails, // Return all user details
       token,
     });
   } catch (err) {

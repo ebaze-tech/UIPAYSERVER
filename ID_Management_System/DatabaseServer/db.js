@@ -1,10 +1,7 @@
+// DatabaseServer/db.js
 const { Sequelize } = require("sequelize");
-const express = require("express");
-const app = express();
-const http = require("http");
-const server = http.createServer(app);
-const PORT = process.env.PORT ? process.env.PORT : 5000;
 require("dotenv").config();
+
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -19,16 +16,23 @@ const sequelize = new Sequelize(
   }
 );
 
-sequelize
-  .authenticate()
-  .then(() => {
+// Function to authenticate the database connection
+const authenticateDatabase = async () => {
+  try {
+    await sequelize.authenticate();
     console.log("Database connected...");
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.log("Error:" + error);
-    process.exit(1);
-  });
-module.exports = sequelize;
+    return true;
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+    return false;
+  }
+};
+
+sequelize.sync().then(() => {
+  console.log("Database & tables created!");
+});
+
+module.exports = {
+  sequelize,
+  authenticateDatabase,
+};

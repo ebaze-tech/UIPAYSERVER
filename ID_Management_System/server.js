@@ -1,40 +1,21 @@
 const express = require("express");
-const app = express();
-const cors = require("cors");
-require("dotenv").config();
-// const app = express
-//require("./DatabaseServer/db");
-
-const { Sequelize } = require("sequelize");
 const http = require("http");
+const cors = require("cors");
+const { authenticateDatabase } = require("./DatabaseServer/db");
+
+require("dotenv").config();
+
+const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT ? process.env.PORT : 5000;
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-    dialectOptions: {
-      charset: "utf8mb4",
-    },
-    logging: false,
-  }
-);
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Database connected...");
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+// Middlewares and routes setupapp.use(express.json());
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
   })
-  .catch((error) => {
-    console.log("Error:" + error);
-    process.exit(1);
-  });
+);
 
 app.use(
   cors({
@@ -48,12 +29,25 @@ app.use(
   // })
 );
 
-app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
+app.get("/", (req, res) => {
+  res.status(200).send({ message: "Server running..." });
+});
+
+const startServer = () => {
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+};
+
+// Start the server unless the database is connected
+const runServer = async () => {
+  const isDbConnected = await authenticateDatabase();
+
+  isDbConnected
+    ? startServer()
+    : (console.error("Server not started due to database connection failure"),
+      process.exit(1));
+};
 
 const UserRegistrationAccounts = require("./User/Accounts/routes/Register");
 const UserLoginAccounts = require("./User/Accounts/routes/Login");
@@ -82,3 +76,5 @@ app.use("/api/accounts/auth", UserRegistrationAccounts);
 app.use("/api/accounts/auth", UserLoginAccounts);
 // app.use("/api/accounts/auth", AdminAccount);
 app.use("/api/accounts/password", Passwords);
+
+runServer();
