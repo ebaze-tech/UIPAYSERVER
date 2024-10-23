@@ -63,6 +63,9 @@ const StudentIdUpgrade = require("./User/IdUpgrade/routes/Student");
 
 const Passwords = require("./User/Password/routes/Password");
 
+const AdminRegisterAccounts = require("./Admin/accounts/routes/Register");
+const AdminLoginAccounts = require("./Admin/accounts/routes/Login");
+
 app.use("/api/idcard/application", StudentIdApplication);
 app.use("/api/idcard/application", StaffIdApplication);
 
@@ -74,7 +77,9 @@ app.use("/api/idcard/upgrade", StaffIdUpgrade);
 
 app.use("/api/accounts/auth", UserRegistrationAccounts);
 app.use("/api/accounts/auth", UserLoginAccounts);
-// app.use("/api/accounts/auth", AdminAccount);
 app.use("/api/accounts/password", Passwords);
+
+app.use("/api/admin", AdminRegisterAccounts);
+app.use("/api/admin", AdminLoginAccounts);
 
 runServer();

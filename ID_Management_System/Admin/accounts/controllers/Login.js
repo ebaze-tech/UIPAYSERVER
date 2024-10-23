@@ -1,0 +1,76 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const AdminModel = require("../models/adminUser");
+require("dotenv").config();
+
+const login = async (req, res) => {
+  const { number, password } = req.body;
+
+  if (!password || !number) {
+    return res.status(400).json({
+      error: "All fields are required.",
+    });
+  }
+
+  try {
+    let userType, UserModel;
+    if (/^\d{8}$/.test(number)) {
+      // It's a student
+      userType = "Admin";
+      UserModel = AdminModel;
+    } else {
+      return res.status(400).json({
+        error: "Invalid number format.",
+      });
+    }
+
+    // Check if user exists
+    const user = await UserModel.findByNumber(number);
+    if (!user) {
+      return res.status(400).json({
+        error: `Invalid ${userType.toLowerCase()} number.`,
+      });
+    }
+
+    // Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({
+        error: "Invalid password.",
+      });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ userType, _id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    // Get user details (excluding password)
+    const userDetails = user.get({ plain: true });
+    delete userDetails.password; // Ensure password is not returned
+
+    res.status(200).json({
+      message: "Login successful.",
+      user: userDetails, // Return all user details
+      token,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+const logout = (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({
+        error: err.message,
+      });
+    }
+    res.status(200).json({ message: "Logout successful." });
+  });
+};
+
+module.exports = { login, logout };
