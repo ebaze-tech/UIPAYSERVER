@@ -14,15 +14,15 @@ StaffUpgrade.init(
       defaultValue: "Pending",
     },
     passport: {
-      type: DataTypes.STRING,
+      type: DataTypes.BLOB,
       allowNull: false,
     },
     schoolSecurityReport: {
-      type: DataTypes.STRING,
+      type: DataTypes.BLOB,
       allowNull: false,
     },
     affidavit: {
-      type: DataTypes.STRING,
+      type: DataTypes.BLOB,
       allowNull: false,
     },
     reason: {
