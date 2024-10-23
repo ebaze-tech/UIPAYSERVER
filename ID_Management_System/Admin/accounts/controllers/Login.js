@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const AdminModel = require("../models/adminUser");
+const SuperAdminModel = require("../models/superAdmin");
+const Manufacturer = require("../models/manufacturer");
 require("dotenv").config();
 
 const login = async (req, res) => {
@@ -15,9 +16,13 @@ const login = async (req, res) => {
   try {
     let userType, UserModel;
     if (/^\d{8}$/.test(number)) {
-      // It's a student
-      userType = "Admin";
-      UserModel = AdminModel;
+      userType = "SuperAdmin";
+      UserModel = SuperAdminModel;
+      return;
+    } else if (/^\d{7}$/.test(number)) {
+      userType = "Manufacturer";
+      UserModel = Manufacturer;
+      return;
     } else {
       return res.status(400).json({
         error: "Invalid number format.",

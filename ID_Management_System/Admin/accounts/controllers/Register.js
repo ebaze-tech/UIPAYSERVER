@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
-const AdminModel = require("../models/adminUser");
+const SuperAdminModel = require("../models/superAdmin");
+const Manufacturer = require("../models/manufacturer");
 
 const register = async (req, res) => {
   const { number, email, password } = req.body;
@@ -13,15 +14,18 @@ const register = async (req, res) => {
   try {
     let userType, UserModel;
     if (/^\d{8}$/.test(number)) {
-      // It's a student
-      userType = "Admin";
-      UserModel = AdminModel;
+      userType = "SuperAdmin";
+      UserModel = SuperAdminModel;
+      return;
+    } else if (/^\d{7}$/.test(number)) {
+      userType = "Manufacturer";
+      UserModel = Manufacturer;
+      return;
     } else {
       return res.status(400).json({
-        message: "Invalid number format.",
+        error: "Invalid number format.",
       });
     }
-
     // Check if user already exists
     let user;
     if ((user = await UserModel.findByNumber(number))) {

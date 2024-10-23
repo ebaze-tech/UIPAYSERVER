@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../../DatabaseServer/db");
 
-const Admin = sequelize.define(
-  "Admin",
+const SuperAdmin = sequelize.define(
+  "SuperAdmin",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -45,20 +45,20 @@ const Admin = sequelize.define(
 );
 
 // Model methods as static methods
-Admin.createAdmin = async ({ email, password, number }) => {
-  return await Admin.create({ email, password, number });
+SuperAdmin.createAdmin = async ({ email, password, number }) => {
+  return await SuperAdmin.create({ email, password, number });
 };
 
-Admin.findByEmail = async (email) => {
-  return await Admin.findOne({ where: { email } });
+SuperAdmin.findByEmail = async (email) => {
+  return await SuperAdmin.findOne({ where: { email } });
 };
 
-Admin.findByNumber = async (number) => {
-  return await Admin.findOne({ where: { number } });
+SuperAdmin.findByNumber = async (number) => {
+  return await SuperAdmin.findOne({ where: { number } });
 };
 
-Admin.findById = async (id) => {
-  return await Admin.findByPk(id);
+SuperAdmin.findById = async (id) => {
+  return await SuperAdmin.findByPk(id);
 };
 
-module.exports = Admin;
+module.exports = SuperAdmin;
