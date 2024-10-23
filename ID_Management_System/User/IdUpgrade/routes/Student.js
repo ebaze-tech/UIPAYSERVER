@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const StudentIdUpgrade = require("../controllers/Student");
 const { authenticate, authorize } = require("../../middleware/Auth");
-const { upgradeValidation } = require("../../middleware/Validation");
+// const { upgradeValidation } = require("../../middleware/Validation");
 const multer = require("multer");
 const path = require("path");
 
@@ -35,7 +35,7 @@ const upload = multer({
 // Apply for Student ID Upgrade Route
 router.post(
   "/student",
-  upgradeValidation,
+  // upgradeValidation,
   authenticate,
   upload.fields([
     { name: "passport", maxCount: 1 },

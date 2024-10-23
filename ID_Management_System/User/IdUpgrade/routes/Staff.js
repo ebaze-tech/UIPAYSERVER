@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const StaffUpgradeController = require("../controllers/Staff");
 const { authenticate, authorize } = require("../../middleware/Auth");
-const { upgradeValidation } = require("../../middleware/Validation");
+// const { upgradeValidation } = require("../../middleware/Validation");
 const multer = require("multer");
 const path = require("path");
 
@@ -35,7 +35,7 @@ const upload = multer({
 // Staff Upgrade Routes
 router.post(
   "/staff",
-  upgradeValidation,
+  // upgradeValidation,
   authenticate,
   authorize("Staff"),
   upload.fields([

@@ -1,7 +1,10 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
+const { sequelize } = require("../../../DatabaseServer/db");
 
-module.exports = (sequelize) => {
-  const Request = sequelize.define("Request", {
+class Requests extends Model {}
+
+Requests.init(
+  {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -13,16 +16,16 @@ module.exports = (sequelize) => {
     },
     userType: {
       type: DataTypes.STRING,
-      allowNull: false, // Either 'Staff' or 'Student'
+      allowNull: false,
     },
     requestType: {
       type: DataTypes.STRING,
-      allowNull: false, // 'Replacement', 'Application', 'Upgrade'
-    },
-    paymentId: {
-      type: DataTypes.INTEGER,
       allowNull: false,
     },
+    // paymentId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
     status: {
       type: DataTypes.STRING,
       defaultValue: "Pending",
@@ -36,16 +39,11 @@ module.exports = (sequelize) => {
       defaultValue: DataTypes.NOW,
       onUpdate: DataTypes.NOW,
     },
-  });
+  },
+  {
+    sequelize,
+    modelName: "Requests",
+  }
+);
 
-  // Request.associate = (models) => {
-  //   Request.belongsTo(models.Staff, { foreignKey: "userId", as: "Staff" });
-  //   Request.belongsTo(models.Student, { foreignKey: "userId", as: "Student" });
-  //   Request.belongsTo(models.Payment, {
-  //     foreignKey: "paymentId",
-  //     as: "Payment",
-  //   });
-  // };
-
-  return Request;
-};
+module.exports = Requests;

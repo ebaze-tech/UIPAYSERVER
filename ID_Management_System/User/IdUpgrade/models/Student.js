@@ -14,15 +14,15 @@ StudentUpgrade.init(
       defaultValue: "Pending",
     },
     passport: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     schoolSecurityReport: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     affidavit: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     reason: {

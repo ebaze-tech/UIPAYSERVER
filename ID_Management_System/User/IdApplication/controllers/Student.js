@@ -3,6 +3,8 @@ const StudentRequest = require("../../Request/models/Request");
 const { sequelize } = require("../../../DatabaseServer/db"); // Assuming you're using Sequelize's transaction management
 
 const StudentIdApplicationController = async (req, res) => {
+  console.log("Request body: ", req.body);
+  console.log("Request files: ", req.files);
   const { number, surname, otherNames, level, department, faculty, hall } =
     req.body;
 
@@ -48,7 +50,7 @@ const StudentIdApplicationController = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
     // Check if an application already exists
-    let existingApplication = await StudentApplication.findOne({
+    const existingApplication = await StudentApplication.findOne({
       where: { number },
       transaction,
     });
@@ -76,6 +78,7 @@ const StudentIdApplicationController = async (req, res) => {
       },
       { transaction }
     );
+    await newIdApplication.save();
 
     // Create new request related to the application
     const newRequest = await StudentRequest.create(
@@ -89,13 +92,14 @@ const StudentIdApplicationController = async (req, res) => {
       },
       { transaction }
     );
+    await newRequest.save();
 
     // Commit transaction
     await transaction.commit();
 
     res.status(201).json({
-      newRequest,
       message: "Student ID Card application request successful.",
+      newRequest,
     });
   } catch (error) {
     await transaction.rollback(); // Rollback transaction on error

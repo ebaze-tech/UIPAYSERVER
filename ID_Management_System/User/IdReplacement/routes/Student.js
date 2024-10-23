@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const StudentIdReplacement = require("../controllers/Student");
 const { authenticate, authorize } = require("../../middleware/Auth");
-const { replacementValidation } = require("../../middleware/Validation");
+// const { replacementValidation } = require("../../middleware/Validation");
 
 const multer = require("multer");
 const path = require("path");
@@ -37,7 +37,7 @@ const upload = multer({
 router.post(
   "/student",
   authenticate,
-  replacementValidation,
+  // replacementValidation,
   upload.fields([
     { name: "passport", maxCount: 1 },
     { name: "schoolSecurityReport", maxCount: 1 },

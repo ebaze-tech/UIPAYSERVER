@@ -17,10 +17,6 @@ StudentApplication.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    position: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     department: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -34,21 +30,16 @@ StudentApplication.init(
       allowNull: false,
     },
     passport: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     schoolSecurityReport: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     affidavit: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
-    },
-    productionCount: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
     },
   },
   {

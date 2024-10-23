@@ -1,7 +1,10 @@
 const StudentUpgrade = require("../models/Student");
 const StudentRequest = require("../../Request/models/Request");
+const { sequelize } = require("../../../DatabaseServer/db");
 
 const StudentIdUpgrade = async (req, res) => {
+  console.log("Request body: ", req.body);
+  console.log("Request files: ", req.files);
   const { number } = req.body;
   const { reason } = req.body;
   const passport = req.files?.passport?.[0]?.path; // Getting passport file path
@@ -9,23 +12,13 @@ const StudentIdUpgrade = async (req, res) => {
   const affidavit = req.files?.passport?.[0]?.path; // Getting passport file path
 
   const { id } = req.params;
-  try {
-    // Ensure both number and passport are provided
-    if (
-      !number ||
-      !passport ||
-      !schoolSecurityReport ||
-      !affidavit ||
-      !reason
-    ) {
-      return res.status(400).json({
-        message: "Submit all required documents!",
-      });
-    }
 
+  try {
+    const transaction = await sequelize.transaction();
     // Check if an upgrade already exists
     const existingUpgrade = await StudentUpgrade.findOne({
       where: { number },
+      transaction,
     });
     if (existingUpgrade) {
       return res
@@ -34,13 +27,17 @@ const StudentIdUpgrade = async (req, res) => {
     }
 
     // Create new Student ID upgrade request
-    const newUpgrade = await StudentUpgrade.create({
-      number,
-      passport,
-      schoolSecurityReport,
-      affidavit,
-      reason,
-    });
+    const newUpgrade = await StudentUpgrade.create(
+      {
+        number,
+        passport,
+        schoolSecurityReport,
+        affidavit,
+        reason,
+      },
+      { transaction }
+    );
+    await newUpgrade.save();
 
     // Create request in Request table
     const newRequest = await StudentRequest.create({
@@ -52,13 +49,18 @@ const StudentIdUpgrade = async (req, res) => {
       studentId: id,
       newUpgrade,
     });
-
+    await newRequest.save();
     res.status(201).json({
       message: "Student ID Card upgrade successful.",
       newRequest,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    await transaction.rollback();
+    console.error("Error creating staff application:", error.message);
+    res.status(500).json({
+      message: "Internal server error.",
+      error: error.message,
+    });
   }
 };
 

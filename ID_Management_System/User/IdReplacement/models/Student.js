@@ -10,15 +10,15 @@ StudentReplacement.init(
       allowNull: false,
     },
     affidavit: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     schoolSecurityReport: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     passport: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     reason: {
@@ -29,10 +29,6 @@ StudentReplacement.init(
       type: DataTypes.STRING,
       defaultValue: "Pending",
     },
-    productionCount: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    }
   },
   {
     sequelize,
