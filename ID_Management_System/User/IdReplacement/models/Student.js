@@ -32,7 +32,7 @@ StudentReplacement.init(
     productionCount: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    },
+    }
   },
   {
     sequelize,
