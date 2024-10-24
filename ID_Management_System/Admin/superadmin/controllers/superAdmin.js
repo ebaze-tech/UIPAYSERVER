@@ -232,6 +232,20 @@ exports.viewAllApprovedRequests = async (req, res) => {
   }
 };
 
+exports.viewAllRejectedRequests = async (req, res) => {
+  try {
+    const requests = await requestModel.findAll({
+      where: { status: "Rejected" },
+    });
+    if (!requests || requests.length === 0) {
+      return res.status(404).json({ message: "Request not found." });
+    }
+    res.status(200).json(requests);
+  } catch (error) {
+    res.status(500).json({ message: "Server error.", error: error.message });
+  }
+};
+
 exports.viewAllPendingRequests = async (req, res) => {
   try {
     const requests = await requestModel.findAll({

@@ -42,6 +42,8 @@ router.get(
   authorize("SuperAdmin"),
   requestController.viewAllApprovedRequests
 );
+// Route to view all rejected requests
+router.get("/view/requests/rejected", authenticate, authorize("SuperAdmin"),requestController.viewAllRejectedRequests);
 
 // Route to view by id of userType
 router.get(
