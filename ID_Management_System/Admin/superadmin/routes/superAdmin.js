@@ -27,12 +27,44 @@ router.get(
   requestController.viewAllRequests
 );
 
+// Route to view a single request
+router.get(
+  "/view/requests/id/:id",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.viewRequestsById
+);
+
+// Route to view a single request by userType(staff or student)
+router.get(
+  "/view/requests/userType/:userType",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.viewAllRequestsByUserType
+);
+
+// Route to view a single request by userType(staff or student) and id
+router.get(
+  "/view/requests/userType&id/:userType/:id",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.viewRequestByIdAndUserType
+);
+
 // Route to view all pending requests
 router.get(
   "/view/requests/pending",
   authenticate,
   authorize("SuperAdmin"),
   requestController.viewAllPendingRequests
+);
+
+// Route to view a single pending requests
+router.get(
+  "/view/requests/pending/:id",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.viewAllPendingRequestsById
 );
 
 // Route to view all approved requests
@@ -42,31 +74,37 @@ router.get(
   authorize("SuperAdmin"),
   requestController.viewAllApprovedRequests
 );
+
+// Route to view all approved requests
+router.get(
+  "/view/requests/approved",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.viewAllApprovedRequestsById
+);
+
+// Route to view a single approved request
+router.get(
+  "/view/requests/approved/:id",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.viewAllApprovedRequests
+);
+
 // Route to view all rejected requests
-router.get("/view/requests/rejected", authenticate, authorize("SuperAdmin"),requestController.viewAllRejectedRequests);
-
-// Route to view by id of userType
 router.get(
-  "/view/requests/id/:id",
+  "/view/requests/rejected",
   authenticate,
   authorize("SuperAdmin"),
-  requestController.viewRequestsById
+  requestController.viewAllRejectedRequests
 );
 
-// Route to view by userType(staff or student)
+// Route to view a single rejected request
 router.get(
-  "/view/requests/userType/:userType",
+  "/view/requests/rejected/:id",
   authenticate,
   authorize("SuperAdmin"),
-  requestController.viewAllRequestsByUserType
-);
-
-// Route to view requests by userType(staff or student) and id of userType
-router.get(
-  "/view/requests/userType&id/:userType/:id",
-  authenticate,
-  authorize("SuperAdmin"),
-  requestController.viewRequestByIdAndUserType
+  requestController.viewAllRejectedRequestsById
 );
 
 // Route to get daily requests

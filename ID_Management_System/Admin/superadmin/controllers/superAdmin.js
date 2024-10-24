@@ -232,6 +232,21 @@ exports.viewAllApprovedRequests = async (req, res) => {
   }
 };
 
+exports.viewAllApprovedRequestsById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const requests = await requestModel.findAll({
+      where: { status: "Approved", id },
+    });
+    if (!requests || requests.length === 0) {
+      return res.status(404).json({ message: "Request not found." });
+    }
+    res.status(200).json(requests);
+  } catch (error) {
+    res.status(500).json({ message: "Server error.", error: error.message });
+  }
+};
+
 exports.viewAllRejectedRequests = async (req, res) => {
   try {
     const requests = await requestModel.findAll({
@@ -246,10 +261,41 @@ exports.viewAllRejectedRequests = async (req, res) => {
   }
 };
 
+exports.viewAllRejectedRequestsById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const requests = await requestModel.findAll({
+      where: { status: "Rejected", id },
+    });
+    if (!requests || requests.length === 0) {
+      return res.status(404).json({ message: "Request not found." });
+    }
+    res.status(200).json(requests);
+  } catch (error) {
+    res.status(500).json({ message: "Server error.", error: error.message });
+  }
+};
+
 exports.viewAllPendingRequests = async (req, res) => {
   try {
     const requests = await requestModel.findAll({
       where: { status: "Pending" },
+      order: [["createdAt", "DESC"]],
+    });
+    if (!requests || requests.length === 0) {
+      return res.status(404).json({ message: "Request not found." });
+    }
+    res.status(200).json(requests);
+  } catch (error) {
+    res.status(500).json({ message: "Server error.", error: error.message });
+  }
+};
+
+exports.viewAllPendingRequestsById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const requests = await requestModel.findAll({
+      where: { status: "Pending", id },
       order: [["createdAt", "DESC"]],
     });
     if (!requests || requests.length === 0) {
