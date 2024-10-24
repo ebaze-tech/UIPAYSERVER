@@ -21,7 +21,7 @@ router.put(
 
 // Route to view all requests
 router.get(
-  "/requests",
+  "/view/requests",
   authenticate,
   authorize("SuperAdmin"),
   requestController.getAllRequests
@@ -29,7 +29,7 @@ router.get(
 
 // Route to view all approved requests
 router.get(
-  "/requests/approved",
+  "/view/requests/approved",
   authenticate,
   authorize("SuperAdmin"),
   requestController.viewAllApprovedRequests
@@ -37,7 +37,7 @@ router.get(
 
 // Route to view by id of userType
 router.get(
-  "/requests/id/:id",
+  "/view/requests/id/:id",
   authenticate,
   authorize("SuperAdmin"),
   requestController.getRequestsById
@@ -45,7 +45,7 @@ router.get(
 
 // Route to view by userType(staff or student)
 router.get(
-  "/requests/userType/:userType",
+  "/view/requests/userType/:userType",
   authenticate,
   authorize("SuperAdmin"),
   requestController.getAllRequestsByUserType
@@ -53,7 +53,7 @@ router.get(
 
 // Route to view requests by userType(staff or student) and id of userType
 router.get(
-  "/requests/userType&id/:userType/:id",
+  "/view/requests/userType&id/:userType/:id",
   authenticate,
   authorize("SuperAdmin"),
   requestController.getRequestByIdAndUserType
