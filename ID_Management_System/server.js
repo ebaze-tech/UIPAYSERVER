@@ -65,6 +65,7 @@ const Passwords = require("./User/Password/routes/Password");
 
 const AdminRegisterAccounts = require("./Admin/accounts/routes/Register");
 const AdminLoginAccounts = require("./Admin/accounts/routes/Login");
+const SuperAdminRequests = require("./Admin/superadmin/routes/superAdmin");
 
 app.use("/api/idcard/application", StudentIdApplication);
 app.use("/api/idcard/application", StaffIdApplication);
@@ -81,5 +82,6 @@ app.use("/api/accounts/password", Passwords);
 
 app.use("/api/admin", AdminRegisterAccounts);
 app.use("/api/admin", AdminLoginAccounts);
+app.use("/api/admin/view", SuperAdminRequests);
 
 runServer();
