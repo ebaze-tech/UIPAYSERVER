@@ -5,21 +5,20 @@ const router = express.Router();
 
 router.get(
   "/requests",
-  // authenticate,
-  // authorize,
+  authenticate,
+  authorize("SuperAdmin"), 
   requestController.getAllRequests
 );
 router.get(
   "/requests/:id",
-  // authenticate,
-  // authorize,
+  authenticate,
+  authorize("SuperAdmin"), 
   requestController.getRequestsById
 );
 router.put(
   "/requests/:id",
-  // authenticate,
-  // authorize,
+  authenticate,
+  authorize("SuperAdmin"), 
   requestController.updateRequestStatus
 );
-
 module.exports = router;
