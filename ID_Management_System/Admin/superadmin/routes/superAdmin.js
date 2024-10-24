@@ -16,15 +16,18 @@ router.put(
   "/update/requests/:userType/:id",
   authenticate,
   authorize("SuperAdmin"),
-  requestController.getRequestByIdAndUserType
+  requestController.viewRequestByIdAndUserType
 );
 
 // Route to view all requests
+router.get("/view/requests/all", authenticate, authorize("SuperAdmin"));
+
+// Route to view all pending requests
 router.get(
-  "/view/requests",
+  "/view/requests/pending",
   authenticate,
   authorize("SuperAdmin"),
-  requestController.getAllRequests
+  requestController.viewAllPendingRequests
 );
 
 // Route to view all approved requests
@@ -40,7 +43,7 @@ router.get(
   "/view/requests/id/:id",
   authenticate,
   authorize("SuperAdmin"),
-  requestController.getRequestsById
+  requestController.viewRequestsById
 );
 
 // Route to view by userType(staff or student)
@@ -48,7 +51,7 @@ router.get(
   "/view/requests/userType/:userType",
   authenticate,
   authorize("SuperAdmin"),
-  requestController.getAllRequestsByUserType
+  requestController.viewAllRequestsByUserType
 );
 
 // Route to view requests by userType(staff or student) and id of userType
@@ -56,7 +59,7 @@ router.get(
   "/view/requests/userType&id/:userType/:id",
   authenticate,
   authorize("SuperAdmin"),
-  requestController.getRequestByIdAndUserType
+  requestController.viewRequestByIdAndUserType
 );
 
 module.exports = router;
