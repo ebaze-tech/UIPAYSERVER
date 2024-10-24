@@ -1,5 +1,6 @@
 const express = require("express");
 const http = require("http");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const { authenticateDatabase } = require("./DatabaseServer/db");
 
@@ -9,7 +10,8 @@ const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT ? process.env.PORT : 5000;
 
-// Middlewares and routes setupapp.use(express.json());
+// Middlewares and routes setupapp.use(express.json());app.use(bodyParser.json()); // Parse JSON bodies
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
   express.urlencoded({

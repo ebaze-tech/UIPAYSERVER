@@ -7,6 +7,9 @@ exports.getAllRequests = async (req, res) => {
     const requests = await requestModel.findAll({
       where: { status: "Pending" },
     });
+    if (!requests) {
+      return res.status(404).json({ message: "Request not found." });
+    }
     res.status(200).json(requests);
   } catch (error) {
     res.status(500).json({ message: "Server error.", error: error.message });

@@ -5,20 +5,20 @@ const router = express.Router();
 
 router.get(
   "/requests",
-  authenticate,
-  authorize,
+  // authenticate,
+  // authorize,
   requestController.getAllRequests
 );
 router.get(
   "/requests/:id",
-  authenticate,
-  authorize,
+  // authenticate,
+  // authorize,
   requestController.getRequestsById
 );
 router.put(
   "/requests/:id",
-  authenticate,
-  authorize,
+  // authenticate,
+  // authorize,
   requestController.updateRequestStatus
 );
 
