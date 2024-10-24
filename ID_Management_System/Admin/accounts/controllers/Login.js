@@ -18,11 +18,11 @@ const login = async (req, res) => {
     if (/^\d{8}$/.test(number)) {
       userType = "SuperAdmin";
       UserModel = SuperAdminModel;
-      return;
+      // return;
     } else if (/^\d{7}$/.test(number)) {
       userType = "Manufacturer";
       UserModel = Manufacturer;
-      return;
+      // return;
     } else {
       return res.status(400).json({
         error: "Invalid number format.",

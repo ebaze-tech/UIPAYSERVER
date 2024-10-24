@@ -21,6 +21,7 @@ exports.getRequestsById = async (req, res) => {
     if (!request) {
       return res.status(404).json({ message: "Request not found." });
     }
+    res.status(200).json(request); // Return the found request
   } catch (error) {
     res.status(500).json({ message: "Server error:", error: error.message });
   }
@@ -32,14 +33,17 @@ exports.updateRequestStatus = async (req, res) => {
   const { status } = req.body;
   try {
     const request = await requestModel.findByPk(id);
-    if (request) {
-      request.status = status;
-      await request.save();
-      res
-        .status(201)
-        .json({ message: "Request updated successfully", request });
+    if (!request) {
+      return res.status(404).json({ message: "Request not found." });
     }
+
+    request.status = status;
+    await request.save();
+
+    res.status(200).json({ message: "Request updated successfully", request });
   } catch (error) {
-    res.status(500).json({ message: "Error updating request", error });
+    res
+      .status(500)
+      .json({ message: "Error updating request", error: error.message });
   }
 };
