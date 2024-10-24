@@ -13,8 +13,32 @@ const StudentIdUpgrade = async (req, res) => {
 
   const { id } = req.params;
 
+  if (
+    !number ||
+    !passport ||
+    !schoolSecurityReport ||
+    !affidavit ||
+    !reason ||
+    !affidavit ||
+    !schoolSecurityReport ||
+    !passport
+  ) {
+    return res.status(400).json({
+      message: "Submit all required documents!",
+    });
+  }
+
+  const numberRegex = /^\d{6}$/;
+
+  // Validate number format
+  if (!numberRegex.test(number)) {
+    return res.status(400).json({
+      message: "Wrong number format.",
+    });
+  }
+
+  const transaction = await sequelize.transaction();
   try {
-    const transaction = await sequelize.transaction();
     // Check if an upgrade already exists
     const existingUpgrade = await StudentUpgrade.findOne({
       where: { number },
@@ -37,7 +61,6 @@ const StudentIdUpgrade = async (req, res) => {
       },
       { transaction }
     );
-    await newUpgrade.save();
 
     // Create request in Request table
     const newRequest = await StudentRequest.create({
@@ -49,7 +72,7 @@ const StudentIdUpgrade = async (req, res) => {
       studentId: id,
       newUpgrade,
     });
-    await newRequest.save();
+
     res.status(201).json({
       message: "Student ID Card upgrade successful.",
       newRequest,

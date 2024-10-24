@@ -23,7 +23,10 @@ const StudentIdApplicationController = async (req, res) => {
     !level ||
     !department ||
     !faculty ||
-    !hall
+    !hall ||
+    !affidavit ||
+    !schoolSecurityReport ||
+    !passport
   ) {
     return res.status(400).json({
       message: "Invalid input. Please fill in all required fields.",
@@ -35,14 +38,6 @@ const StudentIdApplicationController = async (req, res) => {
   if (!numberRegex.test(number)) {
     return res.status(400).json({
       message: "Wrong number format. Number must be 6 digits.",
-    });
-  }
-
-  // Validate if all required files were uploaded
-  if (!affidavit || !schoolSecurityReport || !passport) {
-    return res.status(400).json({
-      message:
-        "Please upload all required documents: affidavit, school security report, and passport.",
     });
   }
 
@@ -78,7 +73,6 @@ const StudentIdApplicationController = async (req, res) => {
       },
       { transaction }
     );
-    await newIdApplication.save();
 
     // Create new request related to the application
     const newRequest = await StudentRequest.create(
@@ -92,7 +86,6 @@ const StudentIdApplicationController = async (req, res) => {
       },
       { transaction }
     );
-    await newRequest.save();
 
     // Commit transaction
     await transaction.commit();

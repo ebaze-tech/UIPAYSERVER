@@ -29,7 +29,10 @@ const StaffIdApplication = async (req, res) => {
     !position ||
     !department ||
     !faculty ||
-    !designation
+    !designation ||
+    !affidavit ||
+    !schoolSecurityReport ||
+    !passport
   ) {
     return res.status(400).json({
       message: "Invalid input. Please fill in all required fields.",
@@ -45,14 +48,6 @@ const StaffIdApplication = async (req, res) => {
     });
   }
 
-  // Validate if all required files were uploaded
-  if (!affidavit || !schoolSecurityReport || !passport) {
-    return res.status(400).json({
-      message:
-        "Please upload all required documents: affidavit, school security report, and passport.",
-    });
-  }
-
   const transaction = await sequelize.transaction();
   try {
     // Check if an application already exists
@@ -60,6 +55,7 @@ const StaffIdApplication = async (req, res) => {
       where: { number },
       transaction,
     });
+
     if (existingApplication) {
       await transaction.rollback();
       return res.status(400).json({
@@ -84,7 +80,6 @@ const StaffIdApplication = async (req, res) => {
         transaction,
       }
     );
-    await newIdApplication.save();
 
     const newRequest = await StaffRequest.create(
       {
@@ -98,7 +93,6 @@ const StaffIdApplication = async (req, res) => {
       },
       { transaction }
     );
-    await newRequest.save();
 
     // Commit transaction
     await transaction.commit();

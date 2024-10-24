@@ -19,13 +19,13 @@ Requests.init(
       allowNull: false,
     },
     requestType: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM(
+        "StudentReplacement",
+        "StudentUpgrade",
+        "StudentApplication"
+      ),
       allowNull: false,
     },
-    // paymentId: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
     status: {
       type: DataTypes.STRING,
       defaultValue: "Pending",
@@ -43,6 +43,7 @@ Requests.init(
   {
     sequelize,
     modelName: "Requests",
+    timestamps: false,
   }
 );
 

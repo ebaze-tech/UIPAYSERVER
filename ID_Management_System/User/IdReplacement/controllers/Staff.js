@@ -13,38 +13,24 @@ const StaffIdReplacement = async (req, res) => {
 
   const { id } = req.params;
 
+  if (!number || !affidavit || !schoolSecurityReport || !passport || !reason) {
+    return res.status(400).json({
+      message: "Submit all required documents!",
+    });
+  }
+
+  const numberRegex = /^\d{4,5}$/;
+
+  // Validate number format
+  if (!numberRegex.test(number)) {
+    return res.status(400).json({
+      message: "Wrong number format.",
+    });
+  }
+
+  const transaction = await sequelize.transaction();
+
   try {
-    if (
-      !number ||
-      !affidavit ||
-      !schoolSecurityReport ||
-      !passport ||
-      !reason
-    ) {
-      return res.status(400).json({
-        message: "Submit all required documents!",
-      });
-    }
-
-    const numberRegex = /^\d{4,5}$/;
-
-    // Validate number format
-    if (!numberRegex.test(number)) {
-      return res.status(400).json({
-        message: "Wrong number format.",
-      });
-    }
-
-    // Validate if all required files were uploaded
-    if (!affidavit || !schoolSecurityReport || !passport) {
-      return res.status(400).json({
-        message:
-          "Please upload all required documents: affidavit, school security report, and passport.",
-      });
-    }
-
-    const transaction = await sequelize.transaction();
-
     // Check if a replacement request already exists
     const existingReplacement = await StaffReplacement.findOne({
       where: { number },
@@ -67,18 +53,15 @@ const StaffIdReplacement = async (req, res) => {
       },
       { transaction }
     );
-    await newReplacement.save();
 
     const newRequest = await StaffRequest.create({
       userId: number,
       status: "Pending",
-      // type: "Replacement",
-      requestType: "StaffReplacement",
+      requestType: "Staff ID Card Replacement",
       staffId: id,
       userType: "Staff",
       newReplacement,
     });
-    await newRequest.save();
 
     await transaction.commit();
 

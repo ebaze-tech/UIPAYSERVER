@@ -5,8 +5,8 @@ const { sequelize } = require("../../../DatabaseServer/db");
 const StudentIdReplacement = async (req, res) => {
   console.log("Request body: ", req.body);
   console.log("Request files: ", req.files);
-  const { number } = req.body;
-  const { reason } = req.body;
+
+  const { number, reason } = req.body;
   const affidavit = req.files?.affidavit?.[0]?.path; // Getting affidavit file path
   const schoolSecurityReport = req.files?.schoolSecurityReport?.[0]?.path; // Getting security report file path
   const passport = req.files?.passport?.[0]?.path; // Getting passport file path
@@ -27,13 +27,6 @@ const StudentIdReplacement = async (req, res) => {
       message: "Wrong number format.",
     });
   }
-  // Validate if all required files were uploaded
-  if (!affidavit || !schoolSecurityReport || !passport) {
-    return res.status(400).json({
-      message:
-        "Please upload all required documents: affidavit, school security report, and passport.",
-    });
-  }
 
   const transaction = await sequelize.transaction();
   try {
@@ -42,14 +35,17 @@ const StudentIdReplacement = async (req, res) => {
       where: { number },
       transaction,
     });
+    console.log("Existing replacement found: " + existingReplacement);
+
     if (existingReplacement) {
+      // Rollback the transaction and respond with an error
       await transaction.rollback();
-      return res.status(404).json({
+      return res.status(400).json({
         message: "Student ID Card replacement request already exists!",
       });
     }
 
-    // Create new Student ID replacement request
+    // If no existing replacement, proceed with creating the new replacement request
     const newReplacement = await StudentReplacement.create(
       {
         number,
@@ -60,27 +56,25 @@ const StudentIdReplacement = async (req, res) => {
       },
       { transaction }
     );
-    await newReplacement.save();
 
     // Create request in Request table
     const newRequest = await StudentRequest.create(
       {
         userId: number,
         status: "Pending",
-        // type: "Replacement",
-        requestType: "StudentReplacement",
+        requestType: "Student ID Card Replacement",
         userType: "Student",
         studentId: id,
         newReplacement,
       },
-      {
-        transaction,
-      }
+      { transaction }
     );
-    await newRequest.save();
+    console.log(newRequest);
 
+    // Commit the transaction
     await transaction.commit();
 
+    // Send success response
     res.status(201).json({
       message: "Student ID Card replacement request successful.",
       newRequest,

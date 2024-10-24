@@ -12,7 +12,16 @@ const StaffIdUpgrade = async (req, res) => {
   const affidavit = req.files?.passport?.[0]?.path; // Getting affidavti file path
   const { id } = req.params;
 
-  if (!number || !passport || !schoolSecurityReport || !affidavit || !reason) {
+  if (
+    !number ||
+    !passport ||
+    !schoolSecurityReport ||
+    !affidavit ||
+    !reason ||
+    !affidavit ||
+    !schoolSecurityReport ||
+    !passport
+  ) {
     return res.status(400).json({
       message: "Submit all required documents!",
     });
@@ -24,14 +33,6 @@ const StaffIdUpgrade = async (req, res) => {
   if (!numberRegex.test(number)) {
     return res.status(400).json({
       message: "Wrong number format.",
-    });
-  }
-
-  // Validate if all required files were uploaded
-  if (!affidavit || !schoolSecurityReport || !passport) {
-    return res.status(400).json({
-      message:
-        "Please upload all required documents: affidavit, school security report, and passport.",
     });
   }
 
@@ -59,7 +60,6 @@ const StaffIdUpgrade = async (req, res) => {
       },
       { transaction }
     );
-    await newUpgrade.save();
 
     // Create request in Request table
     const newRequest = await StaffRequest.create({
@@ -71,7 +71,6 @@ const StaffIdUpgrade = async (req, res) => {
       staffId: id,
       newUpgrade,
     });
-    await newRequest.save();
 
     res.status(201).json({
       message: "Staff ID Card upgrade successful.",
