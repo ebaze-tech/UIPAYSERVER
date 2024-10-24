@@ -3,12 +3,20 @@ const requestController = require("../controllers/superAdmin");
 const { authenticate, authorize } = require("../../middlewares/Auth");
 const router = express.Router();
 
-// Route to approve or reject a request
+// Route to approve or reject a request by id
 router.put(
-  "/requests/:id",
+  "/update/requests/:id",
   authenticate,
   authorize("SuperAdmin"),
   requestController.updateRequestStatus
+);
+
+// Route to approve or reject the request by userType(staff or student) and id of userType
+router.put(
+  "/update/requests/:userType/:id",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.getRequestByIdAndUserType
 );
 
 // Route to view all requests
@@ -18,37 +26,6 @@ router.get(
   authorize("SuperAdmin"),
   requestController.getAllRequests
 );
-// Route to view by id of userType
-router.get(
-  "/requests/:id",
-  authenticate,
-  authorize("SuperAdmin"),
-  requestController.getRequestsById
-);
-
-// Route to view by userType(staff or student)
-router.get(
-  "/requests/:userType",
-  authenticate,
-  authorize("SuperAdmin"),
-  requestController.getAllRequestsByUserType
-);
-
-// Route to view requests by userType(staff or student) and id of userType
-router.get(
-  "/requests/:userType/:id",
-  authenticate,
-  authorize("SuperAdmin"),
-  requestController.getRequestByIdAndUserType
-);
-
-// Route to approve or reject the request by userType(staff or student) and id of userType
-router.put(
-  "/requests/:userType/:id",
-  authenticate,
-  authorize("SuperAdmin"),
-  requestController.getRequestByIdAndUserType
-);
 
 // Route to view all approved requests
 router.get(
@@ -57,4 +34,29 @@ router.get(
   authorize("SuperAdmin"),
   requestController.viewAllApprovedRequests
 );
+
+// Route to view by id of userType
+router.get(
+  "/requests/id/:id",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.getRequestsById
+);
+
+// Route to view by userType(staff or student)
+router.get(
+  "/requests/userType/:userType",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.getAllRequestsByUserType
+);
+
+// Route to view requests by userType(staff or student) and id of userType
+router.get(
+  "/requests/userType&id/:userType/:id",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.getRequestByIdAndUserType
+);
+
 module.exports = router;

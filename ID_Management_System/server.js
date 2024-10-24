@@ -84,6 +84,6 @@ app.use("/api/accounts/password", Passwords);
 
 app.use("/api/admin", AdminRegisterAccounts);
 app.use("/api/admin", AdminLoginAccounts);
-app.use("/api/admin/view", SuperAdminRequests);
+app.use("/api/admin", SuperAdminRequests);
 
 runServer();

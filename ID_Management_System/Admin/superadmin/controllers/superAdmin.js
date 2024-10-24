@@ -2,10 +2,10 @@
 // view new requests by id
 const requestModel = require("../../../User/Request/models/Request");
 
-exports.getAllRequests = async (req, res) => {
+exports.viewAllApprovedRequests = async (req, res) => {
   try {
     const requests = await requestModel.findAll({
-      where: { status: "Pending" },
+      where: { status: "Approved" },
     });
     if (!requests || requests.length === 0) {
       return res.status(404).json({ message: "Request not found." });
@@ -15,10 +15,11 @@ exports.getAllRequests = async (req, res) => {
     res.status(500).json({ message: "Server error.", error: error.message });
   }
 };
-exports.viewAllApprovedRequests = async (req, res) => {
+
+exports.getAllRequests = async (req, res) => {
   try {
     const requests = await requestModel.findAll({
-      where: { status: "Approved" },
+      where: { status: "Pending" },
     });
     if (!requests || requests.length === 0) {
       return res.status(404).json({ message: "Request not found." });
