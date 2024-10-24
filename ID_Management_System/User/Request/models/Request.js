@@ -20,9 +20,12 @@ Requests.init(
     },
     requestType: {
       type: DataTypes.ENUM(
-        "StudentReplacement",
-        "StudentUpgrade",
-        "StudentApplication"
+        "Student ID Card Replacement",
+        "Staff ID Card Replacement",
+        "Student ID Card Upgrade",
+        "Staff ID Card Upgrade",
+        "Student ID Card Application",
+        "Staff ID Card Application"
       ),
       allowNull: false,
     },
@@ -38,6 +41,18 @@ Requests.init(
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
       onUpdate: DataTypes.NOW,
+    },
+    affidavit: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    schoolSecurityReport: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    passport: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {

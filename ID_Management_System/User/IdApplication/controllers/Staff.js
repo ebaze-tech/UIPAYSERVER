@@ -87,9 +87,12 @@ const StaffIdApplication = async (req, res) => {
         status: "Pending",
         newIdApplication: newIdApplication.id,
         staffId: id,
-        // type: "Application",
         userType: "Staff",
-        requestType: "StaffApplication",
+        requestType: "Staff ID Card Application",
+        newIdApplication,
+        affidavit,
+        schoolSecurityReport,
+        passport,
       },
       { transaction }
     );

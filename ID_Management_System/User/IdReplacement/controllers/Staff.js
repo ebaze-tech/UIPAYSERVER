@@ -61,6 +61,9 @@ const StaffIdReplacement = async (req, res) => {
       staffId: id,
       userType: "Staff",
       newReplacement,
+      affidavit,
+      schoolSecurityReport,
+      passport,
     });
 
     await transaction.commit();

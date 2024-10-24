@@ -1,5 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
-const {sequelize} = require("../../../DatabaseServer/db");
+const { sequelize } = require("../../../DatabaseServer/db");
 
 class StudentUpgrade extends Model {}
 

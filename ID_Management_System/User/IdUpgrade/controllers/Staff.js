@@ -66,10 +66,13 @@ const StaffIdUpgrade = async (req, res) => {
       userId: number,
       status: "Pending",
       // type: "Upgrade",
-      requestType: "StaffUpgrade",
+      requestType: "Staff ID Card Upgrade",
       userType: "Staff",
       staffId: id,
       newUpgrade,
+      affidavit,
+      schoolSecurityReport,
+      passport,
     });
 
     res.status(201).json({

@@ -66,6 +66,9 @@ const StudentIdReplacement = async (req, res) => {
         userType: "Student",
         studentId: id,
         newReplacement,
+        affidavit,
+        schoolSecurityReport,
+        passport,
       },
       { transaction }
     );

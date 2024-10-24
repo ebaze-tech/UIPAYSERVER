@@ -1,6 +1,7 @@
 // view all requests
 // view new requests by id
 const requestModel = require("../../../User/Request/models/Request");
+const { sequelize } = require("../../../DatabaseServer/db");
 const { Op, fn, col } = require("sequelize");
 
 const getTodayRange = () => {
@@ -137,18 +138,15 @@ exports.totalCardsProducedWeekly = async (req, res) => {
   try {
     const results = await requestModel.findAll({
       attributes: [
-        [
-          sequelize.fn("DATE_TRUNC", "week", sequelize.col("createdAt")),
-          "week",
-        ], // Group by week
+        [sequelize.fn("YEARWEEK", "week", sequelize.col("createdAt")), "week"], // Group by week
         [sequelize.fn("COUNT", sequelize.col("id")), "totalProduced"],
       ],
       where: {
         status: "Produced",
       },
-      group: [sequelize.fn("DATE_TRUNC", "week", sequelize.col("createdAt"))],
+      group: [sequelize.fn("YEARWEEK", "week", sequelize.col("createdAt"))],
       order: [
-        [sequelize.fn("DATE_TRUNC", "week", sequelize.col("createdAt")), "ASC"],
+        [sequelize.fn("YEARWEEK", "week", sequelize.col("createdAt")), "ASC"],
       ], // Order by week
     });
 
@@ -196,7 +194,7 @@ exports.averageCardProducedWeekly = async (req, res) => {
         [
           sequelize.fn(
             "DISTINCT",
-            sequelize.fn("DATE_TRUNC", "week", sequelize.col("createdAt"))
+            sequelize.fn("YEARWEEK", "week", sequelize.col("createdAt"))
           ),
           "week",
         ],

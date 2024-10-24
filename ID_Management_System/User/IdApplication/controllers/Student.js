@@ -82,7 +82,11 @@ const StudentIdApplicationController = async (req, res) => {
         newIdApplication: newIdApplication.id,
         studentId: id,
         userType: "Student",
-        requestType: "StudentApplication",
+        requestType: "Student ID Card Application",
+        newIdApplication,
+        affidavit,
+        schoolSecurityReport,
+        passport,
       },
       { transaction }
     );
