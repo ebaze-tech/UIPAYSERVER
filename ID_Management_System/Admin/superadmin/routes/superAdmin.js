@@ -20,7 +20,12 @@ router.put(
 );
 
 // Route to view all requests
-router.get("/view/requests/all", authenticate, authorize("SuperAdmin"));
+router.get(
+  "/view/requests/all",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.viewAllRequests
+);
 
 // Route to view all pending requests
 router.get(
@@ -60,6 +65,44 @@ router.get(
   authenticate,
   authorize("SuperAdmin"),
   requestController.viewRequestByIdAndUserType
+);
+
+// Route to get daily requests
+router.get(
+  "/view/requests/today",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.getDailyRequests
+);
+
+// Route to get everyday requests
+router.get(
+  "/view/requests/daily",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.requestsPerDay
+);
+
+// Route to get total cards produced
+router.get(
+  "/view/totalcards",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.viewTotalCards
+);
+// Route to get total cards produced per week
+router.get(
+  "/view/totalcards/weekly",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.totalCardsProducedWeekly
+);
+
+router.get(
+  "/view/totalcards/average",
+  authenticate,
+  authorize("SuperAdmin"),
+  requestController.averageCardProducedWeekly
 );
 
 module.exports = router;
