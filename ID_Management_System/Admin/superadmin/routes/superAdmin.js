@@ -29,7 +29,7 @@ router.get(
 
 // Route to view a single request
 router.get(
-  "/view/requests/id/:id",
+  "/view/requests/all/:id",
   authenticate,
   authorize("SuperAdmin"),
   requestController.viewRequestsById
@@ -80,7 +80,7 @@ router.get(
   "/view/requests/approved",
   authenticate,
   authorize("SuperAdmin"),
-  requestController.viewAllApprovedRequestsById
+  requestController.viewAllApprovedRequests
 );
 
 // Route to view a single approved request
@@ -88,7 +88,7 @@ router.get(
   "/view/requests/approved/:id",
   authenticate,
   authorize("SuperAdmin"),
-  requestController.viewAllApprovedRequests
+  requestController.viewAllApprovedRequestsById
 );
 
 // Route to view all rejected requests
